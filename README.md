@@ -181,4 +181,3 @@ python3 scraper.py --format md
 ## 👤 ڪوڊ ليکڪ / Author
 - **GitHub**: [@sajjad22](https://github.com/sajjad22)
 - **Repository**: [https://github.com/sajjad22/sindhiadabiboard_scrapper](https://github.com/sajjad22/sindhiadabiboard_scrapper)
-- **Email**: sajjad224@gmail.com

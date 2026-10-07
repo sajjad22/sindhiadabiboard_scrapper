@@ -78,7 +78,7 @@ python3 scraper.py --catalogue History</code></pre>
 
   <!-- پڄاڻي (Footer note) -->
   <p style="font-size: 15px; color: #7f8c8d; border-top: 1px solid #eaeded; padding-top: 15px; margin-top: 30px;">
-    <b>پاران:</b> سجاد احمد (<a href="mailto:sajjad224@gmail.com" style="color: #2980b9;">sajjad224@gmail.com</a>) | سنڌي ادب ۽ ڊجيٽلائيزيشن لاءِ هڪ خلوص ڀري ڪوشش.
+    <b>پاران:</b> سجاد احمد (<a href="https://github.com/sajjad22" style="color: #2980b9;">GitHub: @sajjad22</a>) | سنڌي ادب ۽ ڊجيٽلائيزيشن لاءِ هڪ خلوص ڀري ڪوشش.
   </p>
 
 </div>
