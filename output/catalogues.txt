@@ -1,0 +1,36 @@
+==========================================================================================
+فهرست: سنڌي ادبي بورڊ لائبريري ڪئٽلاگ (Sindhi Adabi Board Catalogues List)
+==========================================================================================
+نمبر  ڪئٽلاگ (سنڌي)            English Slug             URL
+------------------------------------------------------------------------------------------
+1     دينيات                   Religion                 http://www.sindhiadabiboard.org/Catalogue/Religion/Main_Religion.HTML
+2     تاريخ                    History                  http://www.sindhiadabiboard.org/Catalogue/History/Main_History.HTML
+3     فلسفو                    Philosophy               http://www.sindhiadabiboard.org/Catalogue/Philosophy/Main_Philosophy.HTML
+4     لوڪ ادب                  Folk_Litrature           http://www.sindhiadabiboard.org/Catalogue/Folk_Litrature/Main_Folk.HTML
+5     ناول                     Navel                    http://www.sindhiadabiboard.org/Catalogue/Navel/Main_Novels.HTML
+6     شخصيات                   Personalties             http://www.sindhiadabiboard.org/Catalogue/Personalties/Main_Personalities.HTML
+7     لغات                     Dictionaries             http://www.sindhiadabiboard.org/Catalogue/Dictionaries/Main_Dictionaries.HTML
+8     ٻاراڻو ادب               children_Litrature       http://www.sindhiadabiboard.org/Catalogue/children_Litrature/Main_Children.HTML
+9     سفرناما                  Safarnama                http://www.sindhiadabiboard.org/Catalogue/Safarnama/Main_Safarnama.HTML
+10    شاعري                    Poetry                   http://www.sindhiadabiboard.org/Catalogue/Poetry/Main_Poetry.HTML
+11    مضمون                    Articles                 http://www.sindhiadabiboard.org/Catalogue/Articles/Main_Articles.HTML
+12    لطيفيات                  Lateefyat                http://www.sindhiadabiboard.org/Catalogue/Lateefyat/Main_Latifyat.HTML
+13    تصوف                     Sufism                   http://www.sindhiadabiboard.org/Catalogue/Sufism/Main_Sufism.HTML
+14    تنقيد                    Tanqeed                  http://www.sindhiadabiboard.org/Catalogue/Tanqeed/Main_Tanqeed.HTML
+15    ڪهاڻيون                  Stories                  http://www.sindhiadabiboard.org/Catalogue/Stories/Main_Stories.HTML
+16    ناٽڪ                     Dramas                   http://www.sindhiadabiboard.org/Catalogue/Dramas/Main_Dramas.HTML
+17    رسالا                    Magazines                http://www.sindhiadabiboard.org/Catalogue/Magazines/Main_Magazines.HTML
+18    سياسيات                  Political_Litrature      http://www.sindhiadabiboard.org/Catalogue/Political_Litrature/Main_Political.HTML
+19    علميات                   Specialized              http://www.sindhiadabiboard.org/Catalogue/Specialized/Main_Specialized.HTML
+20    سائنس                    Science_n_Tech           http://www.sindhiadabiboard.org/Catalogue/Science_n_Tech/Main_Science_n_Tech.HTML
+21    لسانيات                  Lasaniyat                http://www.sindhiadabiboard.org/Catalogue/Lasaniyat/Main_Lasaniyat.HTML
+22    ادب                      Litrature                http://www.sindhiadabiboard.org/Catalogue/Litrature/Main_Literature.HTML
+23    ليکڪ                     Writers                  http://www.sindhiadabiboard.org/Catalogue/Writers/Main_Writers.HTML
+24    انگريزي                  english                  http://www.sindhiadabiboard.org/Catalogue/english/Main_eng.HTML
+25    اڙدو ۽ فارسي ادب         Urdu_Farsi               http://www.sindhiadabiboard.org/Catalogue/Urdu_Farsi/Main_urdu_farsi.HTML
+26    شيخ اياز                 shaikh_ayaz              http://www.sindhiadabiboard.org/Catalogue/shaikh_ayaz/Main_shaikh_ayaz.HTML
+27    گل ڦل (رسالو)            gulphul                  http://www.sindhiadabiboard.org/Catalogue/gulphul/Main_Magazines.HTML
+28    سرتيون (رسالو)           sartyoon                 http://www.sindhiadabiboard.org/Catalogue/sartyoon/Main_Magazines.HTML
+29    مهراڻ (رسالو)            mehran                   http://www.sindhiadabiboard.org/Catalogue/mehran/Main_Magazines.HTML
+==========================================================================================
+مجموعي ڪئٽلاگ: 29

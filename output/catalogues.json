@@ -1,0 +1,208 @@
+[
+  {
+    "id": "Religion",
+    "slug": "Religion",
+    "name_sindhi": "دينيات",
+    "name_en": "Religion",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Religion/Main_Religion.HTML"
+  },
+  {
+    "id": "History",
+    "slug": "History",
+    "name_sindhi": "تاريخ",
+    "name_en": "History",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/History/Main_History.HTML"
+  },
+  {
+    "id": "Philosophy",
+    "slug": "Philosophy",
+    "name_sindhi": "فلسفو",
+    "name_en": "Philosophy",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Philosophy/Main_Philosophy.HTML"
+  },
+  {
+    "id": "Folk_Litrature",
+    "slug": "Folk_Litrature",
+    "name_sindhi": "لوڪ ادب",
+    "name_en": "Folk Literature",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Folk_Litrature/Main_Folk.HTML"
+  },
+  {
+    "id": "Navel",
+    "slug": "Navel",
+    "name_sindhi": "ناول",
+    "name_en": "Novels",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Navel/Main_Novels.HTML"
+  },
+  {
+    "id": "Personalties",
+    "slug": "Personalties",
+    "name_sindhi": "شخصيات",
+    "name_en": "Personalities",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Personalties/Main_Personalities.HTML"
+  },
+  {
+    "id": "Dictionaries",
+    "slug": "Dictionaries",
+    "name_sindhi": "لغات",
+    "name_en": "Dictionaries",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Dictionaries/Main_Dictionaries.HTML"
+  },
+  {
+    "id": "children_Litrature",
+    "slug": "children_Litrature",
+    "name_sindhi": "ٻاراڻو ادب",
+    "name_en": "Children Literature",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/children_Litrature/Main_Children.HTML"
+  },
+  {
+    "id": "Safarnama",
+    "slug": "Safarnama",
+    "name_sindhi": "سفرناما",
+    "name_en": "Travelogue",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Safarnama/Main_Safarnama.HTML"
+  },
+  {
+    "id": "Poetry",
+    "slug": "Poetry",
+    "name_sindhi": "شاعري",
+    "name_en": "Poetry",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Poetry/Main_Poetry.HTML"
+  },
+  {
+    "id": "Articles",
+    "slug": "Articles",
+    "name_sindhi": "مضمون",
+    "name_en": "Articles",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Articles/Main_Articles.HTML"
+  },
+  {
+    "id": "Lateefyat",
+    "slug": "Lateefyat",
+    "name_sindhi": "لطيفيات",
+    "name_en": "Shah Latif Studies",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Lateefyat/Main_Latifyat.HTML"
+  },
+  {
+    "id": "Sufism",
+    "slug": "Sufism",
+    "name_sindhi": "تصوف",
+    "name_en": "Sufism",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Sufism/Main_Sufism.HTML"
+  },
+  {
+    "id": "Tanqeed",
+    "slug": "Tanqeed",
+    "name_sindhi": "تنقيد",
+    "name_en": "Criticism",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Tanqeed/Main_Tanqeed.HTML"
+  },
+  {
+    "id": "Stories",
+    "slug": "Stories",
+    "name_sindhi": "ڪهاڻيون",
+    "name_en": "Stories",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Stories/Main_Stories.HTML"
+  },
+  {
+    "id": "Dramas",
+    "slug": "Dramas",
+    "name_sindhi": "ناٽڪ",
+    "name_en": "Dramas",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Dramas/Main_Dramas.HTML"
+  },
+  {
+    "id": "Magazines",
+    "slug": "Magazines",
+    "name_sindhi": "رسالا",
+    "name_en": "Magazines",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Magazines/Main_Magazines.HTML"
+  },
+  {
+    "id": "Political_Litrature",
+    "slug": "Political_Litrature",
+    "name_sindhi": "سياسيات",
+    "name_en": "Political Literature",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Political_Litrature/Main_Political.HTML"
+  },
+  {
+    "id": "Specialized",
+    "slug": "Specialized",
+    "name_sindhi": "علميات",
+    "name_en": "Specialized / Sciences",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Specialized/Main_Specialized.HTML"
+  },
+  {
+    "id": "Science_n_Tech",
+    "slug": "Science_n_Tech",
+    "name_sindhi": "سائنس",
+    "name_en": "Science & Tech",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Science_n_Tech/Main_Science_n_Tech.HTML"
+  },
+  {
+    "id": "Lasaniyat",
+    "slug": "Lasaniyat",
+    "name_sindhi": "لسانيات",
+    "name_en": "Linguistics",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Lasaniyat/Main_Lasaniyat.HTML"
+  },
+  {
+    "id": "Litrature",
+    "slug": "Litrature",
+    "name_sindhi": "ادب",
+    "name_en": "Literature",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Litrature/Main_Literature.HTML"
+  },
+  {
+    "id": "Writers",
+    "slug": "Writers",
+    "name_sindhi": "ليکڪ",
+    "name_en": "Writers",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Writers/Main_Writers.HTML"
+  },
+  {
+    "id": "english",
+    "slug": "english",
+    "name_sindhi": "انگريزي",
+    "name_en": "English Literature",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/english/Main_eng.HTML"
+  },
+  {
+    "id": "Urdu_Farsi",
+    "slug": "Urdu_Farsi",
+    "name_sindhi": "اڙدو ۽ فارسي ادب",
+    "name_en": "Urdu & Persian Literature",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/Urdu_Farsi/Main_urdu_farsi.HTML"
+  },
+  {
+    "id": "shaikh_ayaz",
+    "slug": "shaikh_ayaz",
+    "name_sindhi": "شيخ اياز",
+    "name_en": "Shaikh Ayaz Poetry",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/shaikh_ayaz/Main_shaikh_ayaz.HTML"
+  },
+  {
+    "id": "gulphul",
+    "slug": "gulphul",
+    "name_sindhi": "گل ڦل (رسالو)",
+    "name_en": "Gul Phul Magazine",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/gulphul/Main_Magazines.HTML",
+    "parent": "Magazines"
+  },
+  {
+    "id": "sartyoon",
+    "slug": "sartyoon",
+    "name_sindhi": "سرتيون (رسالو)",
+    "name_en": "Sartyoon Magazine",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/sartyoon/Main_Magazines.HTML",
+    "parent": "Magazines"
+  },
+  {
+    "id": "mehran",
+    "slug": "mehran",
+    "name_sindhi": "مهراڻ (رسالو)",
+    "name_en": "Mehran Magazine",
+    "url": "http://www.sindhiadabiboard.org/Catalogue/mehran/Main_Magazines.HTML",
+    "parent": "Magazines"
+  }
+]

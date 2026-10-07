@@ -1,0 +1,18 @@
+# Python cache and environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Large scraped books folder (users generate their own)
+output/books/
+*.log
+
+# OS generated
+.DS_Store
+Thumbs.db
