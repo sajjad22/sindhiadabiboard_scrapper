@@ -1,0 +1,84 @@
+<div dir="rtl" style="font-family: 'Noto Sans Arabic', 'Lateef', 'Adabi', 'Segoe UI', Tahoma, sans-serif; line-height: 2; color: #2c3e50; text-align: right; max-width: 800px; margin: 0 auto; padding: 15px;">
+
+  <!-- عنوان (Post Title) -->
+  <h1 style="color: #1a5276; border-bottom: 3px solid #2980b9; padding-bottom: 12px; font-size: 28px; line-height: 1.5;">
+    سنڌي ادبي بورڊ جي آن لائين لائبريريءَ مان ڪتاب ڊائون لوڊ ڪرڻ لاءِ نئون خودڪار ٽول (Sindhi Adabi Board Scraper)
+  </h1>
+
+  <!-- تعارف (Introduction) -->
+  <p style="font-size: 17px; margin-top: 20px;">
+    سنڌي ادبي بورڊ (ڄامشورو) سنڌي ادب، تاريخ ۽ ثقافت جو هڪ عظيم علمي ادارو آهي. بورڊ جي سرڪاري ويب سائيٽ تي سنڌ جي تاريخ، تصوف، لطيفيات، ناولن، شاعري، لغات ۽ ناياب رسالن جا هزارين صفحا موجود آهن. پر ويب سائيٽ جي پراڻي فارميٽ سبب پڙهندڙن ۽ محققن کي ڪتابن جا صفحا هڪ هڪ ڪري ڪلڪ ڪري پڙهڻا پون ٿا، جنهن ڪري سڄو ڪتاب هڪ جاءِ تي محفوظ ڪرڻ تمام گهڻو ڏکيو هو.
+  </p>
+
+  <p style="font-size: 17px;">
+    هن علمي ضرورت کي نظر ۾ رکندي، اسان سنڌي ادبي بورڊ جي ويب سائيٽ تان ڪتاب، ڪئٽلاگ ۽ رسالا سهولت سان گڏ ڪرڻ لاءِ هڪ طاقتور ۽ خودڪار پائٿن ٽول <b>(Sindhi Adabi Board Scraper)</b> تيار ڪيو آهي، جيڪو مڪمل طور تي اوپن سورس ۽ پبلڪ آهي.
+  </p>
+
+  <!-- نمايان باڪس (Highlight Box) -->
+  <div style="background-color: #ebf5fb; border-right: 5px solid #2980b9; padding: 18px 20px; margin: 25px 0; border-radius: 6px;">
+    <h3 style="margin-top: 0; color: #1b4f72; font-size: 20px;">هن ٽول جون 3 اهم ۽ خاص خوبيون:</h3>
+    <ol style="margin-bottom: 0; padding-right: 25px; font-size: 16px;">
+      <li style="margin-bottom: 8px;"><b>پهرين سڀني ڪئٽلاگن جي فهرست:</b> ويب سائيٽ جي سمورن 29 ڪئٽلاگن جي مڪمل لسٽ چيڪ ڪري <code>catalogues.txt</code> ۽ <code>catalogues.json</code> ۾ محفوظ ڪري ٿو.</li>
+      <li style="margin-bottom: 8px;"><b>1060+ ڪتابن جي مڪمل فهرست:</b> سمورن ڪئٽلاگن مان هزار کان وڌيڪ ڪتابن ۽ رسالن جي ڊيٽابيس <code>books.json</code>، <code>books.txt</code> ۽ <code>books.csv</code> ۾ ترتيب ڏئي ٿو.</li>
+      <li style="margin-bottom: 0;"><b>هر ڪتاب هڪ ئي مڪمل فائل ۾:</b> ڪتاب جا سمورا صفحا (ڀلي 50 هجن يا 100 صفحا) الڳ هجڻ بدران، مڪمل تفصيلن سميت هڪ ئي خوبصورت فائل (Text يا Markdown) ۾ محفوظ ٿين ٿا.</li>
+    </ol>
+  </div>
+
+  <!-- مکيه خصوصيتون (Key Features) -->
+  <h2 style="color: #2471a3; border-bottom: 1px solid #d4e6f1; padding-bottom: 8px; font-size: 22px;">
+    ٽول جون خاصيتون (Key Features)
+  </h2>
+  <ul style="font-size: 16px; padding-right: 25px;">
+    <li><b>ڪتاب بابت معلومات (Metadata):</b> ڪتاب جو نالو، ليکڪ/مرتب، ڇپائيندڙ، سال، ايڊيشن، مجموعي صفحا ۽ تعارف پاڻمرادو پڙهي فائيل جي مٿان درج ڪري ٿو.</li>
+    <li><b>صاف سٿري عبارت:</b> پيج تي موجود غير ضروري لنڪس، بينر، مينيو ۽ اشتهار پاڪ ڪري اصل ڪتاب جي سنڌي عبارت مهيا ڪري ٿو.</li>
+    <li><b>رڪاوٽ بعد جاري رکڻ (--resume):</b> جيڪڏهن ڪي ڪتاب اڳي ڊائون لوڊ ٿيل هجن ته اسڪرپٽ انهن کي ڇڏي اڳتي نوان ڪتاب ڊائون لوڊ ڪري ٿو.</li>
+    <li><b>خوبصورت فارميٽ:</b> پڙهڻ لاءِ <code>.txt</code> يا <code>.md</code> (Markdown) فارميٽ جي چونڊ ڪري سگهجي ٿي.</li>
+  </ul>
+
+  <!-- ڪيئن انسٽال ۽ هلائجي (How to Use) -->
+  <h2 style="color: #2471a3; border-bottom: 1px solid #d4e6f1; padding-bottom: 8px; font-size: 22px; margin-top: 30px;">
+    ڪيئن استعمال ڪجي؟ (How to Install & Use)
+  </h2>
+
+  <p style="font-size: 16px;">
+    هن ٽول کي پنهنجي ڪمپيوٽر تي هلائڻ لاءِ توهان وٽ <b>Python 3.10+</b> هئڻ ضروري آهي. هيٺ ڏنل ڪمانڊس پنهنجي ٽرمينل ۾ هلايو:
+  </p>
+
+  <!-- ڪوڊ باڪس 1: ڪلون ۽ انسٽاليشن -->
+  <p style="font-size: 15px; margin-bottom: 5px; font-weight: bold; color: #566573;">1. ڪوڊ ڊائون لوڊ ڪري ضروري لائبريريز انسٽال ڪريو:</p>
+  <pre dir="ltr" style="background: #1e272e; color: #f1f2f6; padding: 14px; border-radius: 6px; font-family: Consolas, Monaco, monospace; font-size: 14px; text-align: left; overflow-x: auto;"><code>git clone https://github.com/sajjad22/sindhiadabiboard_scrapper.git
+cd sindhiadabiboard_scrapper
+pip install -r requirements.txt</code></pre>
+
+  <!-- ڪوڊ باڪس 2: ڪمانڊس -->
+  <p style="font-size: 15px; margin-bottom: 5px; font-weight: bold; color: #566573;">2. صرف ڪئٽلاگن جي لسٽ ڏسڻ لاءِ:</p>
+  <pre dir="ltr" style="background: #1e272e; color: #f1f2f6; padding: 14px; border-radius: 6px; font-family: Consolas, Monaco, monospace; font-size: 14px; text-align: left; overflow-x: auto;"><code>python3 scraper.py --list-catalogues</code></pre>
+
+  <p style="font-size: 15px; margin-bottom: 5px; font-weight: bold; color: #566573;">3. لائبريري جي سمورن ڪتابن جي فهرست تيار ڪرڻ لاءِ:</p>
+  <pre dir="ltr" style="background: #1e272e; color: #f1f2f6; padding: 14px; border-radius: 6px; font-family: Consolas, Monaco, monospace; font-size: 14px; text-align: left; overflow-x: auto;"><code>python3 scraper.py --list-books</code></pre>
+
+  <p style="font-size: 15px; margin-bottom: 5px; font-weight: bold; color: #566573;">4. ڪنهن هڪ سيڪشن جا ڪتاب ڊائون لوڊ ڪرڻ لاءِ (مثال طور لغات يا تاريخ):</p>
+  <pre dir="ltr" style="background: #1e272e; color: #f1f2f6; padding: 14px; border-radius: 6px; font-family: Consolas, Monaco, monospace; font-size: 14px; text-align: left; overflow-x: auto;"><code>python3 scraper.py --catalogue "لغات"
+# يا انگريزي نالي سان:
+python3 scraper.py --catalogue History</code></pre>
+
+  <p style="font-size: 15px; margin-bottom: 5px; font-weight: bold; color: #566573;">5. رڳو هڪ خاص ڪتاب لنڪ ذريعي ڊائون لوڊ ڪرڻ لاءِ:</p>
+  <pre dir="ltr" style="background: #1e272e; color: #f1f2f6; padding: 14px; border-radius: 6px; font-family: Consolas, Monaco, monospace; font-size: 14px; text-align: left; overflow-x: auto;"><code>python3 scraper.py --book-url "http://www.sindhiadabiboard.org/Catalogue/Religion/Book4/Book_page1.html"</code></pre>
+
+  <!-- گٽ هب لنڪ ۽ باڪس (GitHub Call to Action) -->
+  <div style="background-color: #fcf3cf; border: 1px solid #f9e79f; padding: 20px; margin: 30px 0; border-radius: 8px; text-align: center;">
+    <h3 style="margin-top: 0; color: #7d6608; font-size: 20px;">هي اوپن سورس پروجيڪٽ گٽ هب تي ڏسو</h3>
+    <p style="font-size: 16px; color: #5b4a05; margin-bottom: 18px;">
+      پروجيڪٽ جو سمورو سورس ڪوڊ، رهنمائي ۽ تفصيل GitHub تي موجود آهن. پنهنجا مشورا ڏيو ۽ پروجيڪٽ کي اسٽار (Star) ڪريو!
+    </p>
+    <a href="https://github.com/sajjad22/sindhiadabiboard_scrapper" target="_blank" rel="noopener noreferrer" style="background-color: #24292e; color: #ffffff; padding: 12px 28px; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold; display: inline-block;">
+      GitHub Repository وزٽ ڪريو →
+    </a>
+  </div>
+
+  <!-- پڄاڻي (Footer note) -->
+  <p style="font-size: 15px; color: #7f8c8d; border-top: 1px solid #eaeded; padding-top: 15px; margin-top: 30px;">
+    <b>پاران:</b> سجاد احمد (<a href="mailto:sajjad224@gmail.com" style="color: #2980b9;">sajjad224@gmail.com</a>) | سنڌي ادب ۽ ڊجيٽلائيزيشن لاءِ هڪ خلوص ڀري ڪوشش.
+  </p>
+
+</div>
