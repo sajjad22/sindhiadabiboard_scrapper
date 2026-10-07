@@ -126,13 +126,265 @@ def save_books_list(books: list[dict[str, Any]], output_dir: str) -> dict[str, s
     return {"json": json_path, "txt": txt_path, "csv": csv_path}
 
 
+def generate_book_html(book_data: dict[str, Any]) -> str:
+    """
+    Generates a clean, standalone, responsive RTL HTML5 document for the book.
+    """
+    title = book_data.get("title", "ڪتاب")
+    author = book_data.get("author", "سنڌي ادبي بورڊ")
+    cat_name = book_data.get("catalogue_name", "")
+    cat_slug = book_data.get("catalogue_slug", "")
+    entry_url = book_data.get("entry_url", "")
+    metadata = book_data.get("metadata", {})
+    pages = book_data.get("pages", [])
+    intro = metadata.get("intro", "")
+
+    # Build metadata items
+    meta_items_html = [
+        f'<div class="meta-item"><span class="meta-label">ڪتاب جو نالو:</span> <span class="meta-val">{title}</span></div>',
+        f'<div class="meta-item"><span class="meta-label">مصنف / مرتب:</span> <span class="meta-val">{author}</span></div>',
+        f'<div class="meta-item"><span class="meta-label">ڪئٽلاگ:</span> <span class="meta-val">{cat_name} ({cat_slug})</span></div>',
+    ]
+    if metadata.get("edition"):
+        meta_items_html.append(f'<div class="meta-item"><span class="meta-label">ايڊيشن:</span> <span class="meta-val">{metadata["edition"]}</span></div>')
+    if metadata.get("year"):
+        meta_items_html.append(f'<div class="meta-item"><span class="meta-label">سال:</span> <span class="meta-val">{metadata["year"]}</span></div>')
+    if metadata.get("publisher"):
+        meta_items_html.append(f'<div class="meta-item"><span class="meta-label">ڇپائيندڙ:</span> <span class="meta-val">{metadata["publisher"]}</span></div>')
+    meta_items_html.append(f'<div class="meta-item"><span class="meta-label">ڊائون لوڊ ٿيل صفحا:</span> <span class="meta-val">{len(pages)}</span></div>')
+
+    # Build intro block
+    intro_html = ""
+    if intro:
+        intro_html = f'''
+        <div class="intro-box">
+          <div class="intro-title">ڪتاب جو تعارف</div>
+          <p>{intro}</p>
+        </div>'''
+
+    # Build TOC page badges
+    toc_badges = []
+    for p in pages:
+        p_num = p.get("page_number", 1)
+        toc_badges.append(f'<a class="page-badge" href="#page-{p_num}">{p_num}</a>')
+    toc_html = "".join(toc_badges)
+
+    # Build pages content
+    pages_html = []
+    for p in pages:
+        p_num = p.get("page_number", 1)
+        p_hdr = p.get("header_meta", "")
+        raw_content = p.get("content", "")
+        # Split paragraphs
+        paragraphs = [f"<p>{line}</p>" for line in raw_content.splitlines() if line.strip()]
+        page_body = "\n".join(paragraphs)
+
+        hdr_meta_span = f'<span class="page-section-meta">{p_hdr}</span>' if p_hdr else ""
+
+        pages_html.append(f'''
+      <article class="book-page" id="page-{p_num}">
+        <div class="page-header">
+          <span class="page-badge-label">صفحو : {p_num}</span>
+          {hdr_meta_span}
+        </div>
+        <div class="page-content">
+          {page_body}
+        </div>
+      </article>''')
+
+    all_pages_body = "\n".join(pages_html)
+
+    html_template = f'''<!DOCTYPE html>
+<html lang="sd" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title} - سنڌي ادبي بورڊ</title>
+  <style>
+    :root {{
+      --primary-color: #1a5276;
+      --accent-color: #2980b9;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #2c3e50;
+      --border-color: #e2e8f0;
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{
+      font-family: 'Noto Sans Arabic', 'Lateef', 'Scheherazade New', 'Adabi', 'Traditional Arabic', serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 2.2;
+      font-size: 1.25rem;
+      margin: 0;
+      padding: 25px 15px;
+      direction: rtl;
+      text-align: right;
+    }}
+    .container {{
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      padding: 35px 30px;
+    }}
+    header.book-header {{
+      border-bottom: 3px double var(--border-color);
+      padding-bottom: 25px;
+      margin-bottom: 30px;
+    }}
+    h1.book-title {{
+      font-size: 2.2rem;
+      color: var(--primary-color);
+      margin: 0 0 15px 0;
+      line-height: 1.4;
+    }}
+    .meta-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 1.05rem;
+    }}
+    .meta-item {{ display: flex; gap: 8px; }}
+    .meta-label {{ font-weight: bold; color: #475569; }}
+    .meta-val {{ color: #0f172a; }}
+    .intro-box {{
+      background: #eff6ff;
+      border-right: 4px solid var(--accent-color);
+      padding: 18px;
+      margin: 25px 0;
+      border-radius: 6px;
+      font-size: 1.15rem;
+    }}
+    .intro-title {{
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }}
+    .toc-nav {{
+      background: #fafafa;
+      border: 1px solid var(--border-color);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 35px;
+    }}
+    .toc-title {{
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #334155;
+      font-size: 1.1rem;
+    }}
+    .page-badges {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 160px;
+      overflow-y: auto;
+      padding: 4px;
+    }}
+    .page-badge {{
+      display: inline-block;
+      padding: 3px 10px;
+      background: #e2e8f0;
+      color: #1e293b;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }}
+    .page-badge:hover {{ background: var(--accent-color); color: #fff; }}
+    article.book-page {{
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 30px;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }}
+    .page-header {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #edf2f7;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }}
+    .page-badge-label {{
+      background: var(--primary-color);
+      color: #ffffff;
+      padding: 2px 14px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: bold;
+    }}
+    .page-section-meta {{
+      font-size: 0.95rem;
+      color: #64748b;
+    }}
+    .page-content p {{
+      margin: 0 0 1.2em 0;
+      text-align: justify;
+    }}
+    footer.book-footer {{
+      border-top: 2px solid var(--border-color);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #64748b;
+    }}
+    @media print {{
+      body {{ background: #fff; padding: 0; font-size: 12pt; }}
+      .container {{ box-shadow: none; padding: 0; max-width: 100%; }}
+      .toc-nav {{ display: none; }}
+      article.book-page {{ page-break-after: always; border: none; box-shadow: none; padding: 10px 0; }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="book-header">
+      <h1 class="book-title">{title}</h1>
+      <div class="meta-grid">
+        {"".join(meta_items_html)}
+      </div>
+      {intro_html}
+    </header>
+
+    <nav class="toc-nav">
+      <div class="toc-title">صفحن جي فهرست (Jump to Page):</div>
+      <div class="page-badges">
+        {toc_html}
+      </div>
+    </nav>
+
+    <main class="book-content">
+{all_pages_body}
+    </main>
+
+    <footer class="book-footer">
+      <p>اصل ماخذ: <a href="{entry_url}" target="_blank" rel="noopener noreferrer">{entry_url}</a></p>
+      <p>© Sindhi Adabi Board, Jamshoro | سنڌي ادبي بورڊ، ڄامشورو</p>
+    </footer>
+  </div>
+</body>
+</html>'''
+    return html_template
+
+
 def save_individual_book_file(
     book_data: dict[str, Any],
     output_dir: str,
     output_format: str = "txt"
-) -> str:
+) -> list[str]:
     """
     Saves an individual book containing all its contents in a single file.
+    Supports output_format: 'txt', 'html', 'md', or 'all'
+    Returns list of saved file paths.
     """
     cat_slug = sanitize_filename(book_data.get("catalogue_slug", "general"))
     book_id = sanitize_filename(book_data.get("book_id", "book"))
@@ -142,17 +394,34 @@ def save_individual_book_file(
     os.makedirs(books_dir, exist_ok=True)
 
     filename_base = f"{book_id}_{title}"
-    if output_format.lower() == "md":
-        filename = f"{filename_base}.md"
-        content = book_data["full_text"]
-    else:
-        filename = f"{filename_base}.txt"
-        content = book_data["full_text"]
+    saved_paths = []
+    fmt = output_format.lower().strip()
 
-    file_path = os.path.join(books_dir, filename)
+    # Determine formats to output
+    save_txt = fmt in ("txt", "all", "both")
+    save_html = fmt in ("html", "all", "both")
+    save_md = fmt in ("md",)
 
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(content)
+    if save_txt:
+        txt_path = os.path.join(books_dir, f"{filename_base}.txt")
+        with open(txt_path, "w", encoding="utf-8") as f:
+            f.write(book_data["full_text"])
+        saved_paths.append(txt_path)
+        logger.info("Saved single book file (TXT): %s (%d pages)", txt_path, book_data.get("pages_count", 0))
 
-    logger.info("Saved single book file: %s (%d pages)", file_path, book_data.get("pages_count", 0))
-    return file_path
+    if save_html:
+        html_path = os.path.join(books_dir, f"{filename_base}.html")
+        html_content = generate_book_html(book_data)
+        with open(html_path, "w", encoding="utf-8") as f:
+            f.write(html_content)
+        saved_paths.append(html_path)
+        logger.info("Saved single book file (HTML): %s (%d pages)", html_path, book_data.get("pages_count", 0))
+
+    if save_md:
+        md_path = os.path.join(books_dir, f"{filename_base}.md")
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(book_data["full_text"])
+        saved_paths.append(md_path)
+        logger.info("Saved single book file (MD): %s (%d pages)", md_path, book_data.get("pages_count", 0))
+
+    return saved_paths

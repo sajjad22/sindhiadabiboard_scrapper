@@ -66,8 +66,8 @@ Download 2 books, with a limit of 3 pages per book:
 python3 scraper.py --catalogue Philosophy --limit-books 2 --limit-pages 3
 ```
 
-#### 5. Download a Single Specific Book
-Provide the book's direct URL:
+#### 5. Download a Single Specific Book Directly
+Directly downloads the book without scanning catalogues, saving all pages into single files (both TXT and standalone responsive HTML by default):
 ```bash
 python3 scraper.py --book-url "http://www.sindhiadabiboard.org/Catalogue/Religion/Book4/Book_page1.html"
 ```
@@ -78,10 +78,14 @@ Skips books that are already saved to disk:
 python3 scraper.py --resume
 ```
 
-#### 7. Change Format or Output Directory
-Save books as Markdown (`.md`) in a custom folder:
+#### 7. Choose Output Format (HTML, TXT, MD, or All)
+Export books as responsive standalone HTML webpages, clean TXT, Markdown, or all:
 ```bash
-python3 scraper.py --format md --output-dir ./my_books
+# Export as HTML only:
+python3 scraper.py --book-url "http://www.sindhiadabiboard.org/Catalogue/Religion/Book4/Book_page1.html" --format html
+
+# Export as both TXT and HTML (default):
+python3 scraper.py --catalogue Dictionaries --format all
 ```
 
 ### Output File Structure
@@ -94,13 +98,14 @@ output/
 ├── books.csv                 # Spreadsheet-friendly CSV list
 └── books/                    # Individual book files
     ├── Religion/
-    │   ├── Book1_شان_رسول.txt
-    │   └── Book4_نماز_جنت_جي_ڪنجي.txt
+    │   ├── Book4_نماز_جنت_جي_ڪنجي.txt     # Complete book text
+    │   └── Book4_نماز_جنت_جي_ڪنجي.html    # Standalone responsive HTML webpage
     ├── History/
-    │   └── Book1_چچ_نامو.txt
+    │   ├── Book1_چچ_نامو.txt
+    │   └── Book1_چچ_نامو.html
     └── Dictionaries/
         ├── Book1_پرنٽ_ٽيڪنالوجي.txt
-        └── Book2_لغات_سنڌي_مخففات.txt
+        └── Book1_پرنٽ_ٽيڪنالوجي.html
 ```
 
 ---
@@ -161,14 +166,20 @@ python3 scraper.py --catalogue History
 python3 scraper.py --catalogue Philosophy --limit-books 2 --limit-pages 3
 ```
 
-#### 5. رڳو هڪ خاص ڪتاب لنڪ ذريعي حاصل ڪرڻ:
+#### 5. سڌو سنئون رڳو هڪ ڪتاب ڊائون لوڊ ڪرڻ (Direct Book Download):
+ڪئٽلاگ اسڪين ڪرڻ بنا، سڌو سنئون مطلوب ڪتاب جا سمورا صفحا کڻڻ ۽ HTML / TXT ۾ محفوظ ڪرڻ لاءِ:
 ```bash
 python3 scraper.py --book-url "http://www.sindhiadabiboard.org/Catalogue/Religion/Book4/Book_page1.html"
 ```
 
-#### 6. مارڪ ڊائون (.md) فارميٽ ۾ محفوظ ڪرڻ:
+#### 6. ويب پيج (HTML) يا ٽيڪسٽ (TXT) طور محفوظ ڪرڻ:
+ڊفالٽ طور تي هي ٽول ٽيڪسٽ ۽ موبائل-فرينڊلي HTML ويب پيج ٻئي هڪ ئي وقت ٺاهي ٿو:
 ```bash
-python3 scraper.py --format md
+# رڳو HTML ويب پيج تيار ڪرڻ لاءِ:
+python3 scraper.py --book-url "http://www.sindhiadabiboard.org/Catalogue/Religion/Book4/Book_page1.html" --format html
+
+# سڀني فارميٽس (TXT ۽ HTML) لاءِ:
+python3 scraper.py --catalogue "لغات" --format all
 ```
 
 ---

@@ -11,11 +11,12 @@ Produces:
 import argparse
 import logging
 import os
+import re
 import sys
 import time
 
-from adabi_scraper.session import ScraperSession
-from adabi_scraper.catalogues import get_all_catalogues
+from adabi_scraper.session import ScraperSession, normalize_url
+from adabi_scraper.catalogues import get_all_catalogues, KNOWN_CATALOGUES_META
 from adabi_scraper.books import get_books_in_catalogue, get_all_books_across_catalogues
 from adabi_scraper.reader import scrape_full_book
 from adabi_scraper.exporter import (
@@ -108,7 +109,7 @@ def main():
         "--book-url",
         type=str,
         default=None,
-        help="Scrape a single book directly by its URL (e.g. .../Book4/Book_page1.html)",
+        help="Scrape a single book directly by its URL without scanning catalogues (e.g. .../Book4/Book_page1.html)",
     )
     parser.add_argument(
         "--limit-catalogues",
@@ -130,9 +131,9 @@ def main():
     )
     parser.add_argument(
         "--format",
-        choices=["txt", "md"],
-        default="txt",
-        help="File format for individual books (txt or md, default: txt)",
+        choices=["txt", "html", "md", "all"],
+        default="all",
+        help="File format for individual books (txt, html, md, or all; default: all)",
     )
     parser.add_argument(
         "--delay",
@@ -152,6 +153,57 @@ def main():
     session = ScraperSession(delay=args.delay)
     output_dir = os.path.abspath(args.output_dir)
     os.makedirs(output_dir, exist_ok=True)
+
+    # -------------------------------------------------------------
+    # DIRECT BOOK DOWNLOAD MODE (Bypasses catalogues when URL given)
+    # -------------------------------------------------------------
+    if args.book_url:
+        print("\n[📖 سڌو ڪتاب ڊائون لوڊ ڪرڻ (Direct Book Download Mode)]")
+        print(f" -> ڪتاب جو لنڪ: {args.book_url}\n")
+
+        match_slug = re.search(r"Catalogue/([^/]+)/", args.book_url, re.IGNORECASE)
+        cat_slug = match_slug.group(1) if match_slug else "General"
+
+        match_book = re.search(r"/(Book\d+)/", args.book_url, re.IGNORECASE)
+        book_id = match_book.group(1) if match_book else "Book"
+
+        meta = KNOWN_CATALOGUES_META.get(cat_slug, {})
+        cat_name = meta.get("name_sindhi", cat_slug)
+
+        entry_url = normalize_url(args.book_url)
+        if not re.search(r"Book_page\d+\.html?", entry_url, re.IGNORECASE):
+            entry_url = re.sub(r"/[^/]+\.html?$", "/Book_page1.html", entry_url, flags=re.IGNORECASE)
+        about_url = re.sub(r"/[^/]+\.html?$", "/aboutbook.htm", entry_url, flags=re.IGNORECASE)
+
+        book_info = {
+            "book_id": book_id,
+            "catalogue_slug": cat_slug,
+            "catalogue_name": cat_name,
+            "title": "",
+            "entry_url": entry_url,
+            "about_url": about_url,
+        }
+
+        t0 = time.time()
+        try:
+            full_book_data = scrape_full_book(session, book_info, limit_pages=args.limit_pages)
+            saved_paths = save_individual_book_file(full_book_data, output_dir, output_format=args.format)
+            elapsed = time.time() - t0
+            print("\n" + "=" * 80)
+            print("ڪتاب ڪاميابيءَ سان محفوظ ٿي ويو! (BOOK DOWNLOADED SUCCESSFULLY)")
+            print("=" * 80)
+            print(f"ڪتاب جو نالو (Title): {full_book_data['title']}")
+            print(f"مصنف / مرتب (Author): {full_book_data['author']}")
+            print(f"ڊائون لوڊ ٿيل صفحا (Pages): {full_book_data['pages_count']}")
+            print(f"خرچ ٿيل وقت (Time): {elapsed:.1f}s")
+            print("محفوظ ٿيل فائلون (Saved Files):")
+            for sp in saved_paths:
+                print(f"  ✓ {sp}")
+            print("=" * 80)
+        except Exception as e:
+            logger.error("Failed to scrape book '%s': %s", args.book_url, e)
+            sys.exit(1)
+        return
 
     # -------------------------------------------------------------
     # PHASE 1: Discover and List All Catalogues First
@@ -210,17 +262,7 @@ def main():
     # -------------------------------------------------------------
     # PHASE 3: Download and Generate Individual Files for Books
     # -------------------------------------------------------------
-    # Handle single book URL override if provided
     books_to_download = all_books
-    if args.book_url:
-        books_to_download = [{
-            "book_id": "CustomBook",
-            "catalogue_slug": "custom",
-            "catalogue_name": "ڪسٽم",
-            "title": "ڪتاب",
-            "entry_url": args.book_url,
-            "about_url": "",
-        }]
 
     if args.limit_books:
         books_to_download = books_to_download[:args.limit_books]
@@ -235,7 +277,8 @@ def main():
         cat_slug = sanitize_filename(b_info.get("catalogue_slug", "general"))
         book_id = sanitize_filename(b_info.get("book_id", "book"))
         safe_title = sanitize_filename(b_title)
-        expected_path = os.path.join(output_dir, "books", cat_slug, f"{book_id}_{safe_title}.{args.format}")
+        expected_ext = "html" if args.format == "html" else "txt"
+        expected_path = os.path.join(output_dir, "books", cat_slug, f"{book_id}_{safe_title}.{expected_ext}")
 
         if args.resume and os.path.exists(expected_path):
             print(f"[{idx}/{total_download}] ⏭ اڳ ۾ موجود آهي (Skipping existing): {b_title}")
@@ -246,10 +289,12 @@ def main():
         t0 = time.time()
         try:
             full_book_data = scrape_full_book(session, b_info, limit_pages=args.limit_pages)
-            saved_file_path = save_individual_book_file(full_book_data, output_dir, output_format=args.format)
+            saved_paths = save_individual_book_file(full_book_data, output_dir, output_format=args.format)
             elapsed = time.time() - t0
-            print(f"         ✓ محفوظ ٿي ويو ({full_book_data['pages_count']} صفحا, {elapsed:.1f}s): {saved_file_path}")
-            saved_files.append(saved_file_path)
+            print(f"         ✓ محفوظ ٿي ويو ({full_book_data['pages_count']} صفحا, {elapsed:.1f}s):")
+            for sp in saved_paths:
+                print(f"           - {sp}")
+            saved_files.extend(saved_paths)
         except Exception as e:
             logger.error("Failed to scrape book '%s': %s", b_title, e)
 

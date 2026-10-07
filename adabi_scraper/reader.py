@@ -24,7 +24,7 @@ def parse_about_book(session: ScraperSession, about_url: str) -> dict[str, Any]:
 
         labels = [
             ("title", r"ڪتاب\s*جو\s*نالو"),
-            ("author", r"(?:مصنف|مرتب|مترجم|از|ليکڪ)"),
+            ("author", r"(?:مصنف|مرتب|مترجم|(?<![\w\u0600-\u06FF])از(?![\w\u0600-\u06FF])|ليکڪ)"),
             ("edition", r"ايڊيشن"),
             ("publisher", r"ڇپائيندڙ"),
             ("year", r"سال"),
@@ -200,12 +200,27 @@ def scrape_full_book(
 
             # Check page 1 for title/author fallback if needed
             if i == 1:
-                # Page 1 often has Title in lines 1-2
-                lines = [line.strip() for line in text.splitlines() if line.strip()]
-                if lines and not metadata.get("title"):
-                    title_from_page1 = lines[0]
-                if len(lines) > 1 and not metadata.get("author"):
-                    author_from_page1 = lines[1]
+                main_tbl = soup.find("table", id="table155")
+                if main_tbl:
+                    short_rows = []
+                    for r in main_tbl.find_all("tr", recursive=False)[1:]:
+                        r_text = clean_text(r.get_text())
+                        if r_text and len(r_text) < 120 and not any(kw in r_text for kw in ("نئون صفحو", "ٻيا صفحا")):
+                            short_rows.append(r_text)
+                        else:
+                            break
+                    if short_rows and not metadata.get("title"):
+                        title_from_page1 = short_rows[0]
+                    if len(short_rows) > 1 and not metadata.get("author"):
+                        author_from_page1 = short_rows[1]
+
+                # Fallback to lines if not found
+                if not title_from_page1 or not author_from_page1:
+                    lines = [clean_text(line) for line in text.splitlines() if clean_text(line)]
+                    if lines and not metadata.get("title") and not title_from_page1:
+                        title_from_page1 = lines[0]
+                    if len(lines) > 1 and not metadata.get("author") and not author_from_page1:
+                        author_from_page1 = lines[1]
 
             page_num = extract_page_number(p_url)
             pages_content.append({
