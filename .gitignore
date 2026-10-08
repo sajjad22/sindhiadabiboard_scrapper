@@ -9,8 +9,8 @@ venv/
 ENV/
 .venv/
 
-# Large scraped books folder (users generate their own)
-output/books/
+# Scraper outputs (users generate their own)
+output/
 *.log
 
 # OS generated
