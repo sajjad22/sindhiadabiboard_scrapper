@@ -55,10 +55,16 @@ def parse_about_book(session: ScraperSession, about_url: str) -> dict[str, Any]:
     return meta
 
 
-def clean_page_content(soup: BeautifulSoup) -> tuple[str, str]:
+BLOCK_TAGS = {"p", "h1", "h2", "h3", "h4", "h5", "h6", "li", "blockquote", "pre"}
+CONTAINER_TAGS = {"div", "td", "th", "section", "article", "main"}
+BR_TOKEN = "___BR_TOKEN___"
+
+
+def clean_page_content(soup: BeautifulSoup) -> tuple[str, str, list[str]]:
     """
-    Cleans a book page and returns (header_meta, clean_text_content).
-    Removes banners, iframes, footers, and pagination bars.
+    Cleans a book page and returns (header_meta, clean_text_content, blocks).
+    Uses block-level extraction to eliminate artificial line breaks and word splits,
+    while preserving intentional poem line breaks (<br>) and tabular data.
     """
     # Remove script, style, and iframe tags
     for tag in soup(["script", "style", "iframe", "noscript"]):
@@ -75,7 +81,7 @@ def clean_page_content(soup: BeautifulSoup) -> tuple[str, str]:
             main_container = soup.body
 
     if not main_container:
-        return "", ""
+        return "", "", []
 
     # Extract header banner metadata (table156 or contains 'سيڪشن؛')
     header_meta = ""
@@ -89,32 +95,83 @@ def clean_page_content(soup: BeautifulSoup) -> tuple[str, str]:
             el.decompose()
             break
 
-    # Remove navigation links (e.g., نئون صفحو, ٻيا صفحا, ڪتاب جو ٽائيٽل صفحو)
-    for p in main_container.find_all(["p", "td", "div", "tr"]):
-        text = p.get_text()
-        if any(nav_kw in text for nav_kw in ("نئون صفحو", "ٻيا صفحا", "ڪتاب جو ٽائيٽل صفحو")) and len(text) < 350:
-            p.decompose()
-
     # Remove footer / copyright table (table139)
     for ft in main_container.find_all("table", id="table139"):
         ft.decompose()
 
-    # Extract raw text lines
-    raw_lines = main_container.get_text(separator="\n").splitlines()
-    cleaned_lines: list[str] = []
-    for line in raw_lines:
-        s = clean_text(line)
-        if s:
-            # Skip lingering navigation keywords
-            if s in ("نئون صفحو", "ڪتاب جو ٽائيٽل صفحو", "هوم پيج", "لائبريري ڪئٽلاگ"):
-                continue
-            cleaned_lines.append(s)
+    # Remove navigation links (e.g., نئون صفحو, ٻيا صفحا, ڪتاب جو ٽائيٽل صفحو)
+    for p in main_container.find_all(["p", "td", "div", "tr", "table"]):
+        text = p.get_text()
+        if any(nav_kw in text for nav_kw in ("نئون صفحو", "ٻيا صفحا", "ڪتاب جو ٽائيٽل صفحو")) and len(text) < 350:
+            p.decompose()
 
-    content_text = "\n".join(cleaned_lines)
-    # Normalize multiple newlines
-    content_text = re.sub(r"\n{3,}", "\n\n", content_text).strip()
+    # Format data/grid tables (e.g. multi-column tables, naqsh)
+    for tbl in main_container.find_all("table"):
+        if not tbl.parent:
+            continue
+        rows = tbl.find_all("tr")
+        table_lines = []
+        is_multi_col = False
+        for r in rows:
+            cells = r.find_all(["td", "th"])
+            if len(cells) > 1:
+                is_multi_col = True
+            cell_vals = [re.sub(r"[\s\u200b\xa0]+", " ", clean_text(c.get_text())).strip() for c in cells]
+            cell_vals = [c for c in cell_vals if c]
+            if cell_vals:
+                table_lines.append(" | ".join(cell_vals))
+        if is_multi_col and table_lines:
+            new_p = soup.new_tag("p")
+            new_p.string = BR_TOKEN.join(table_lines)
+            tbl.replace_with(new_p)
 
-    return header_meta, content_text
+    # Convert remaining explicit line breaks (<br>) to our BR_TOKEN marker
+    for br in main_container.find_all("br"):
+        br.replace_with(BR_TOKEN)
+
+    def is_nav_or_junk(text: str) -> bool:
+        if not text:
+            return True
+        s = text.strip()
+        if any(kw in s for kw in ("نئون صفحو", "ٻيا صفحا", "ڪتاب جو ٽائيٽل صفحو", "هوم پيج", "لائبريري ڪئٽلاگ")):
+            return True
+        if any(kw in s for kw in ("Copy Right", "Sindhi Adabi Board", "Last Update:")) and len(s) < 300:
+            return True
+        if re.match(r"^(?:if !mso|endif|<!--.*-->|\s*)$", s):
+            return True
+        return False
+
+    def clean_block_text(el: Any) -> str:
+        raw = el.get_text()
+        lines = []
+        for line_part in raw.split(BR_TOKEN):
+            cl = clean_text(line_part)
+            cl = re.sub(r"[\s\u200b\xa0]+", " ", cl).strip()
+            if cl:
+                lines.append(cl)
+        return "\n".join(lines)
+
+    blocks: list[str] = []
+
+    def walk(node: Any) -> None:
+        if not hasattr(node, "name") or not node.name:
+            return
+
+        has_child_blocks = any(c.name in BLOCK_TAGS or c.name in CONTAINER_TAGS for c in node.find_all(True))
+        if node.name in BLOCK_TAGS or (node.name in CONTAINER_TAGS and not has_child_blocks):
+            txt = clean_block_text(node)
+            if txt and not is_nav_or_junk(txt):
+                if not blocks or blocks[-1] != txt:
+                    blocks.append(txt)
+            return
+
+        for child in node.children:
+            walk(child)
+
+    walk(main_container)
+
+    content_text = "\n\n".join(blocks)
+    return header_meta, content_text, blocks
 
 
 def extract_page_number(url: str) -> int:
@@ -196,7 +253,7 @@ def scrape_full_book(
     for i, p_url in enumerate(page_urls, start=1):
         try:
             soup, _ = session.get_soup(p_url)
-            header_meta, text = clean_page_content(soup)
+            header_meta, text, blocks = clean_page_content(soup)
 
             # Check page 1 for title/author fallback if needed
             if i == 1:
@@ -214,13 +271,13 @@ def scrape_full_book(
                     if len(short_rows) > 1 and not metadata.get("author"):
                         author_from_page1 = short_rows[1]
 
-                # Fallback to lines if not found
+                # Fallback to blocks if not found
                 if not title_from_page1 or not author_from_page1:
-                    lines = [clean_text(line) for line in text.splitlines() if clean_text(line)]
-                    if lines and not metadata.get("title") and not title_from_page1:
-                        title_from_page1 = lines[0]
-                    if len(lines) > 1 and not metadata.get("author") and not author_from_page1:
-                        author_from_page1 = lines[1]
+                    first_lines = [b.split("\n")[0].strip() for b in blocks if b.strip()]
+                    if first_lines and not metadata.get("title") and not title_from_page1:
+                        title_from_page1 = first_lines[0]
+                    if len(first_lines) > 1 and not metadata.get("author") and not author_from_page1:
+                        author_from_page1 = first_lines[1]
 
             page_num = extract_page_number(p_url)
             pages_content.append({
@@ -228,6 +285,7 @@ def scrape_full_book(
                 "url": p_url,
                 "header_meta": header_meta,
                 "content": text,
+                "blocks": blocks,
             })
         except Exception as e:
             logger.warning("Error scraping page %s: %s", p_url, e)

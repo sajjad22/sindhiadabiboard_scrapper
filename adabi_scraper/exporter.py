@@ -1,4 +1,5 @@
 import csv
+import html
 import json
 import logging
 import os
@@ -174,10 +175,24 @@ def generate_book_html(book_data: dict[str, Any]) -> str:
     for p in pages:
         p_num = p.get("page_number", 1)
         p_hdr = p.get("header_meta", "")
-        raw_content = p.get("content", "")
-        # Split paragraphs
-        paragraphs = [f"<p>{line}</p>" for line in raw_content.splitlines() if line.strip()]
-        page_body = "\n".join(paragraphs)
+        blocks = p.get("blocks")
+        if not blocks:
+            raw_content = p.get("content", "")
+            blocks = [b.strip() for b in raw_content.split("\n\n") if b.strip()]
+
+        elements_html = []
+        for block in blocks:
+            if " | " in block:
+                rows = [r.split(" | ") for r in block.split("\n") if r.strip()]
+                grid_rows = "".join(f"<tr>{''.join(f'<td>{html.escape(cell.strip())}</td>' for cell in row)}</tr>" for row in rows)
+                elements_html.append(f'<table class="data-grid">{grid_rows}</table>')
+            else:
+                lines = [html.escape(line.strip()) for line in block.split("\n") if line.strip()]
+                if lines:
+                    inner = "<br>\n".join(lines)
+                    elements_html.append(f"<p>{inner}</p>")
+
+        page_body = "\n".join(elements_html)
 
         hdr_meta_span = f'<span class="page-section-meta">{p_hdr}</span>' if p_hdr else ""
 
@@ -328,6 +343,19 @@ def generate_book_html(book_data: dict[str, Any]) -> str:
     .page-content p {{
       margin: 0 0 1.2em 0;
       text-align: justify;
+      line-height: 2.2;
+    }}
+    .data-grid {{
+      margin: 20px auto;
+      border-collapse: collapse;
+      text-align: center;
+      width: 100%;
+      max-width: 650px;
+    }}
+    .data-grid td {{
+      border: 1px solid var(--border-color);
+      padding: 6px 12px;
+      font-size: 1.15rem;
     }}
     footer.book-footer {{
       border-top: 2px solid var(--border-color);
